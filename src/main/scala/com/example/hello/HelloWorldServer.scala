@@ -9,11 +9,14 @@ object HelloWorldServerMain extends HelloWorldServer
 
 class HelloWorldServer extends HttpServer {
 
+  override def streamRequest = true
+
   override def configureHttp(router: HttpRouter) {
     router
       .filter[LoggingMDCFilter[Request, Response]]
       .filter[TraceIdMDCFilter[Request, Response]]
       .filter[CommonFilters]
       .add[HelloWorldController]
+      .add[StreamingController]
   }
 }
